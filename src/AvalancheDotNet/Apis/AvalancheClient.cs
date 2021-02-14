@@ -4,12 +4,13 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Reflection;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace AvalancheDotNet
+namespace AvalancheDotNet.Apis
 {
-    public class AvalancheClient
+    public partial class AvalancheClient
     {
         private HttpClient _http;
         private AvalancheConfig _config;
@@ -20,15 +21,20 @@ namespace AvalancheDotNet
             _config = config;
             _logger = logger;
         }
-
         internal async Task<T> CallMethod<T>(string method)
+        {
+            return await CallMethod<T>(method, new Dictionary<string, string>());
+        }
+
+        internal async Task<T> CallMethod<T>(string method, Dictionary<string, string> parameters)
         {
             string trace = $"jsonrpc call - {method} - {_config.NodeUrl} ";
             var request = new ApiRequestInfo
             {
                 jsonrpc = "2.0",
                 id = 1,
-                method = method
+                method = method,
+                parameters = parameters
             };
             HttpResponseMessage? httpResult = null;
             try
@@ -55,20 +61,6 @@ namespace AvalancheDotNet
         private string Serialize<T>(T result)
         {
             return System.Text.Json.JsonSerializer.Serialize(result);
-        }
-
-        public string InfoGetNodeVersion()
-        {
-            var request = new ApiRequestInfo
-            {
-                jsonrpc = "2.0",
-                id = 1,
-                method = "info.getNodeID"
-            };
-            var httpResult = _http.PostAsJsonAsync(_config.NodeUrl, request);
-            var stringResult = httpResult.Result.Content.ReadAsStringAsync().Result;
-            Console.WriteLine("string reuslt : " + stringResult);
-            return stringResult;
         }
     }
 }

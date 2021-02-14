@@ -1,7 +1,10 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using AvalancheDotNet;
+using AvalancheDotNet.Apis;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,7 +14,9 @@ namespace Tests
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<AvalancheDotNet.Dto.AvalancheConfig> (new AvalancheDotNet.Dto.AvalancheConfig("http://box:9650/ext/info"));
+            services.AddSingleton(new AvalancheDotNet.Dto.AvalancheConfig("http://box:9650/ext/info"));
+            services.AddSingleton(new HttpClient());
+            services.AddTransient<AvalancheClient>();
         }
     }
 }

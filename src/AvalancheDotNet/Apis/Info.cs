@@ -10,15 +10,45 @@ using System.Threading.Tasks;
 
 namespace AvalancheDotNet.Apis
 {
-    public class Info : AvalancheClient
+    public partial class AvalancheClient
     {
-        public Info(AvalancheConfig config, HttpClient http, ILogger<AvalancheClient> logger) : base(config, http, logger)
+        public async Task<ApiResult<InfoBlockchainId>> GetInfoBlochainId()
         {
+            return await this.CallMethod<ApiResult<InfoBlockchainId>>("info.getBlockchainID", new Dictionary<string, string> { { "alias", "X" } });
+        }
+        public async Task<ApiResult<InfoNetworkId>> GetInfoNetworkId()
+        {
+            return await this.CallMethod<ApiResult<InfoNetworkId>>("info.getNetworkID");
+        }
+        
+        public async Task<ApiResult<InfoNetworkName>> GetInfoNetworkName()
+        {
+            return await this.CallMethod<ApiResult<InfoNetworkName>>("info.getNetworkName");
+        }
+        public async Task<ApiResult<InfoNodeId>> GetInfoNodeId()
+        {
+            return await this.CallMethod<ApiResult<InfoNodeId>>("info.getNodeID");
         }
 
-        public async Task<string> GetNodeVersion()
+        public async Task<ApiResult<InfoNodeIp>> GetInfoNodeIp()
         {
-            return await this.CallMethod<string>("info.getNodeID");
-        }            
+            return await this.CallMethod<ApiResult<InfoNodeIp>>("info.getNodeIP");
+        }
+        public async Task<ApiResult<InfoNodeVersion>> GetInfoNodeVersion()
+        {
+            return await this.CallMethod<ApiResult<InfoNodeVersion>>("info.getNodeVersion");
+        }
+        public async Task<ApiResult<InfoIsBootstrapped>> GetInfoIsBootstraped()
+        {
+            return await this.CallMethod<ApiResult<InfoIsBootstrapped>>("info.isBootstrapped", new Dictionary<string, string> { { "chain", "X" } });
+        }
+        public async Task<ApiResult<InfoTxFee>> GetInfoTxFees()
+        {
+            return await this.CallMethod<ApiResult<InfoTxFee>>("info.getTxFee");
+        }
+        public async Task<ApiResult<InfoPeers>> GetInfoPeers()
+        {
+            return await this.CallMethod<ApiResult<InfoPeers>>("info.peers");
+        }
     }
 }
