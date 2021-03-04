@@ -1,4 +1,5 @@
-﻿using AvalancheDotNet.Dto;
+﻿using AvalancheDotNet.Common;
+using AvalancheDotNet.Dto;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -10,8 +11,13 @@ using System.Threading.Tasks;
 
 namespace AvalancheDotNet.Apis
 {
-    public partial class AvalancheClient
+    public class InfoClient
     {
+        private AvalancheClient _client;
+        public InfoClient(AvalancheClient client)
+        {
+            this._client = client;
+        }
         public async Task<ApiResult<InfoBlockchainId>> GetInfoBlochainId()
         {
             return await this.CallMethod<ApiResult<InfoBlockchainId>>("info.getBlockchainID", new Dictionary<string, string> { { "alias", "X" } });
@@ -50,5 +56,15 @@ namespace AvalancheDotNet.Apis
         {
             return await this.CallMethod<ApiResult<InfoPeers>>("info.peers");
         }
+
+        internal async Task<T> CallMethod<T>(string method)
+        {
+            return await this.CallMethod<T>(method, new Dictionary<string, string>());
+        }
+
+        internal async Task<T> CallMethod<T>(string method, Dictionary<string, string> parameters)
+        {
+            return await this._client.CallMethod<T>(Constants.InfoApiUrl, method, parameters);
+        }
+        }
     }
-}

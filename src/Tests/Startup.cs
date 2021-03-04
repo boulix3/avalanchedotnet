@@ -14,9 +14,10 @@ namespace Tests
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton(new AvalancheDotNet.Dto.AvalancheConfig("http://box:9650/ext/info"));
+            services.AddSingleton(new AvalancheDotNet.Dto.AvalancheConfig("https://api.avax-test.network"));
             services.AddSingleton(new HttpClient());
             services.AddTransient<AvalancheClient>();
+            services.AddTransient<InfoClient>();            
         }
     }
 }

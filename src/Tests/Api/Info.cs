@@ -12,8 +12,8 @@ namespace Tests.Api
 {
     public class Info
     {
-        public AvalancheClient _client;
-        public Info(AvalancheClient client)
+        public InfoClient _client;
+        public Info(InfoClient client)
         {
             _client = client;
         }

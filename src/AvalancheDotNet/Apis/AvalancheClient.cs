@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace AvalancheDotNet.Apis
 {
-    public partial class AvalancheClient
+    public class AvalancheClient
     {
         private HttpClient _http;
         private AvalancheConfig _config;
@@ -21,14 +21,15 @@ namespace AvalancheDotNet.Apis
             _config = config;
             _logger = logger;
         }
-        internal async Task<T> CallMethod<T>(string method)
+        internal async Task<T> CallMethod<T>(string apiUrl, string method)
         {
-            return await CallMethod<T>(method, new Dictionary<string, string>());
+            return await CallMethod<T>(apiUrl, method, new Dictionary<string, string>());
         }
 
-        internal async Task<T> CallMethod<T>(string method, Dictionary<string, string> parameters)
+        internal async Task<T> CallMethod<T>(string apiUrl, string method, Dictionary<string, string> parameters)
         {
-            string trace = $"jsonrpc call - {method} - {_config.NodeUrl} ";
+            var url = $"{_config.NodeUrl}/{apiUrl}";
+            string trace = $"jsonrpc call - {method} - {url} ";
             var request = new ApiRequestInfo
             {
                 jsonrpc = "2.0",
@@ -39,7 +40,7 @@ namespace AvalancheDotNet.Apis
             HttpResponseMessage? httpResult = null;
             try
             {
-                httpResult = await _http.PostAsJsonAsync(_config.NodeUrl, request);
+                httpResult = await _http.PostAsJsonAsync(url, request);
                 httpResult.EnsureSuccessStatusCode();
                 var result = await httpResult.Content.ReadFromJsonAsync<T>();
                 _logger.LogTrace(trace + $"result : {Serialize(result)}");
@@ -47,7 +48,7 @@ namespace AvalancheDotNet.Apis
             }
             catch (Exception e)
             {
-                trace += $"Exception lors de l'appel : {method} - {_config.NodeUrl}";
+                trace += $"Exception lors de l'appel : {method} - {url}";
                 if (httpResult != null)
                 {
                     trace += @$"HTTP{(int)httpResult.StatusCode} {httpResult.StatusCode}";
