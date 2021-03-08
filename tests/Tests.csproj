@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AvalancheDotNet\AvalancheDotNet.csproj" />
+    <ProjectReference Include="..\src\AvalancheDotNet.csproj" />
   </ItemGroup>
 
   <ItemGroup>

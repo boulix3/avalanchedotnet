@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AvalancheDotNet.Dto
+namespace AvalancheDotNet.Common.Records
 {
     public record InfoNodeId(string nodeID);
     public record InfoNodeVersion(string version);

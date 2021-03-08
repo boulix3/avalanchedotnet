@@ -17,7 +17,7 @@ namespace Tests
             services.AddSingleton(new AvalancheDotNet.Dto.AvalancheConfig("https://api.avax-test.network"));
             services.AddSingleton(new HttpClient());
             services.AddTransient<AvalancheClient>();
-            services.AddTransient<InfoClient>();            
+            services.AddTransient<AvalancheDotNet.Apis.Api>();            
         }
     }
 }
