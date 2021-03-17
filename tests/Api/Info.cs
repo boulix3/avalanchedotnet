@@ -1,8 +1,11 @@
 ﻿using AvalancheDotNet;
 using AvalancheDotNet.Apis;
+using AvalancheDotNet.Common;
+using AvalancheDotNet.Common.Records;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
@@ -17,60 +20,75 @@ namespace Tests.Api
         {
             _client = client;
         }
+        private void AssertResultOk<T>(RequestResponseData<T> response)
+        {
+            Assert.Equal(HttpStatusCode.OK, response.status);
+            Assert.Equal(JRPCApi.jrpcVersion, response.response.jsonRpc);
+            Assert.NotNull(response.response);
+        }
         [Fact]
         public async void GetBlockchainId()
         {
             var result = await _client.GetInfoBlochainId();
-            Assert.Equal(Constants.ExpectedXBlockchainId, result.result.blockchainID);
+            AssertResultOk(result);
+            Assert.Equal(Constants.ExpectedXBlockchainId, result.response.result.blockchainID);
         }
         [Fact]
         public async void GetNetworkId()
         {
             var result = await _client.GetInfoNetworkId();
-            Assert.Equal(Constants.ExpectedNetworkId, result.result.networkID);
+            AssertResultOk(result);
+            Assert.Equal(Constants.ExpectedNetworkId, result.response.result.networkID);
         }
         [Fact]
         public async void GetNetworkName()
         {
             var result = await _client.GetInfoNetworkName();
-            Assert.Equal(Constants.ExpectedNetworkName, result.result.networkName);
+            AssertResultOk(result);
+            Assert.Equal(Constants.ExpectedNetworkName, result.response.result.networkName);
         }
         [Fact]
         public async void GetNodeId()
         {
             var result = await _client.GetInfoNodeId();
-            Assert.NotNull(result.result.nodeID);
+            AssertResultOk(result);
+            Assert.NotNull(result.response.result.nodeID);
         }
         [Fact]
         public async void GetNodeIp()
         {
             var result = await _client.GetInfoNodeIp();
-            Assert.Equal(Constants.ExpectedNodeIp, result.result.ip);
+            AssertResultOk(result);
+            Assert.Equal(Constants.ExpectedNodeIp, result.response.result.ip);
         }
         [Fact]
         public async void GetNodeVersion()
         {
             var result = await _client.GetInfoNodeVersion();
-            Assert.Equal(Constants.ExpectedNodeVersion, result.result.version);
+            AssertResultOk(result);
+            Assert.Equal(Constants.ExpectedNodeVersion, result.response.result.version);
         }
 
         [Fact]
         public async void GetNodeIsBootstraped()
         {
             var result = await _client.GetInfoIsBootstraped();
-            Assert.Equal(Constants.ExpectedIsBootstrapped, result.result.isBootstrapped);
+            AssertResultOk(result);
+            Assert.Equal(Constants.ExpectedIsBootstrapped, result.response.result.isBootstrapped);
         }
         [Fact]
         public async void GetNodeTxFees()
         {
             var result = await _client.GetInfoTxFees();
-            Assert.Equal(Constants.ExpectedTxFees, result.result);
+            AssertResultOk(result);
+            Assert.Equal(Constants.ExpectedTxFees, result.response.result);
         }
         [Fact]
         public async void GetNodePeers()
         {
             var result = await _client.GetInfoPeers();
-            Assert.True(Constants.ExpectedMinNumPeers < result.result.numPeers);
+            AssertResultOk(result);
+            Assert.True(Constants.ExpectedMinNumPeers < result.response.result.numPeers);
         }
     }
 }

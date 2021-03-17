@@ -13,7 +13,7 @@ namespace AvalancheDotNet.Common
 {
     public abstract class JRPCApi
     {
-        private const string jrpcVersion = "2.0";
+        public const string jrpcVersion = "2.0";
         private static int rpcid = 0;
 
         private HttpClient _http;
@@ -35,7 +35,7 @@ namespace AvalancheDotNet.Common
             HttpResponseMessage? httpResult = null;
             try
             {
-                httpResult = await _http.PostAsJsonAsync(_config.NodeUrl, request);
+                httpResult = await _http.PostAsJsonAsync(url, request);
                 ResponseData<T>? apiResponse = null;
                 if (httpResult.IsSuccessStatusCode)
                 {

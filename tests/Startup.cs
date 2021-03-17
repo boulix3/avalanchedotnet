@@ -1,5 +1,6 @@
 ﻿using AvalancheDotNet;
 using AvalancheDotNet.Apis;
+using AvalancheDotNet.Common.Records;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -14,9 +15,8 @@ namespace Tests
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton(new AvalancheDotNet.Dto.AvalancheConfig("https://api.avax-test.network"));
+            services.AddSingleton(new AvalancheCore("https://api.avax-test.network"));
             services.AddSingleton(new HttpClient());
-            services.AddTransient<AvalancheClient>();
             services.AddTransient<AvalancheDotNet.Apis.Api>();            
         }
     }
