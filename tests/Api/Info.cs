@@ -74,7 +74,7 @@ namespace Tests.Api
         {
             var result = await _client.GetPeers();
             result.ShouldBeOk();
-            Constants.ExpectedMinNumPeers.Should().BeGreaterThan(result.response.result.numPeers);
+            result.response.result.numPeers.Should().BeGreaterThan(Constants.ExpectedMinNumPeers);
         }
     }
 }
