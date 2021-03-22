@@ -1,5 +1,7 @@
 ﻿using AvalancheDotNet.Common.Records;
+
 using Microsoft.Extensions.Logging;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,13 +21,21 @@ namespace AvalancheDotNet.Common
         private HttpClient _http;
         private AvalancheCore _config;
         private ILogger _logger;
+
+        /**
+     * Returns the rpcid, a strictly-increasing number, starting from 1, indicating the next
+     * request ID that will be sent.
+     */
+        public static int RpcId { get { return rpcid; } }
         internal JRPCApi(AvalancheCore config, HttpClient http, ILogger logger)
         {
             _http = http;
             _config = config;
             _logger = logger;
         }
-
+        /// <summary>
+        /// Makes the jsonrpc call to the node
+        /// </summary>        
         public async Task<RequestResponseData<T>> CallMethod<T>(string method, Dictionary<string, string> parameters, string apiUrl)
         {
             var url = $"{_config.NodeUrl}/{apiUrl}";
